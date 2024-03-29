@@ -37,7 +37,7 @@
 
 
 <body class="bg-transparen" style="background-image: url('@Model.game.GamePreviewUrl'); background-size: cover; background-repeat: no-repeat; background-position: center;">
-    <div    class="row overlay  bg-dark bg-opacity-50 rounded-2">
+    <div class="row overlay  bg-dark bg-opacity-50 rounded-2">
         <div class="col-lg-3">
             <img src="@Model.game.GameImageUrl" class="img-fluid" alt="Game Image">
         </div>
@@ -67,36 +67,36 @@
         </div>
     </div>
 
-    <div class="bg-dark bg-opacity-50 fixed-bottom text-white d-flex justify-content-center" style="max-height: 300px; overflow-y: auto;">
-        <div style="max-width:700px;">
-            <div class="container mt-4">
-                <h5 class="text-white">Write a comment:</h5>
-                <div class="form-group">
-                    <input class="form-control" id="commentTextArea" rows="1" placeholder="Write your comment here..."></input>
-                </div>
-                <button type="button" class="btn btn-primary" onclick="postComment()">Post Comment</button>
+    <div class="bg-dark bg-opacity-50 fixed-bottom" style="max-height: 300px; overflow-y: auto;">
+        <div class="container mt-4">
+            <h5 class="text-white">Write a comment:</h5>
+            <div class="form-group">
+                <input class="form-control" id="commentTextArea" rows="1" placeholder="Write your comment here..."></input>
             </div>
-            <div class="container mt-4">
-                <h5 class="text-white">Comments:</h5>
-                <div class="row">
-                    @foreach (var comment in Model.Comments)
-                    {
-                        <div class="col-12 mb-3">
-                            <div class="card bg-transparent border-0">
-                                <div class="card-body d-flex align-items-center text-white">
-                                    <img src="@comment.User.AvatarUrl" class="rounded-circle" style="width: 50px; height: 50px;" />
-                                    <div class="ml-3">
-                                        <p class="font-weight-bold mb-0 text-white">@comment.User.UserName</p>
-                                        <p class="text-white">@comment.Text</p>
-                                    </div>
+            <button type="button" class="btn btn-primary" onclick="postComment()">Post Comment</button>
+        </div>
+        <div class="container mt-4">
+            <h5 class="text-white">Comments:</h5>
+            <div class="row">
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="col-12 mb-3">
+                        <div class="card bg-transparent border-0">
+                            <div class="card-body d-flex align-items-center text-white">
+                                <img src="@comment.User.AvatarUrl" class="rounded-circle" style="width: 50px; height: 50px;" />
+                                <div class="ml-3">
+                                    <p class="font-weight-bold mb-0 text-white">@comment.User.UserName</p>
+                                    <p class="text-white">@comment.Text</p>
                                 </div>
                             </div>
                         </div>
-                    }
-                </div>
+                    </div>
+                }
             </div>
         </div>
+     
     </div>
+
     <div id="buyModal" class="modal fade bg-transparent" role="dialog" >
         <div class="modal-dialog bg-dark">
             <div class="modal-content bg-dark">
@@ -137,7 +137,9 @@
                 'Content-Type': 'application/json'
             },
             body: jsonComment
+        }).then(e => {
+            location.reload();
         })
-        location.reload();
+        
     }
 </script>

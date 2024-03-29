@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthorization();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-builder.Services.AddScoped<IGameServiceBase, GameService>();
+builder.Services.AddScoped<IGameServiceBase, GroupService>();
 builder.Services.AddScoped<IWorkShopServiceBase, WorkShopService>();
 builder.Services.AddScoped<IGroupServices, GroupService>();
 builder.Services.AddScoped<IUserServiceBase, UserService>();

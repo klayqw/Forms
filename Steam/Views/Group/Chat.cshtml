@@ -68,17 +68,18 @@
                 body: JSON.stringify(data)
             })
                 .then(response => {
-                    if (response.ok) {
-                        location.reload();
-                    }
+                    location.reload();
                 })
                 .catch(error => console.error('Error:', error));
             location.reload();
         });
 
         async function DeleteMessage(id){
-            await fetch('/Group/MessageDelete?id=' + id, { method: "DELETE" });
-            location.reload();
+            await fetch('/Group/MessageDelete?id=' + id, { method: "DELETE" })
+            .then(e => {
+                location.reload();
+            });
+            
         }
     </script>
 }

@@ -10,11 +10,11 @@ using Steam.Services.Base;
 
 namespace Steam.Services;
 
-public class GameService : IGameServiceBase
+public class GroupService : IGameServiceBase
 {   
     private readonly SteamDBContext _dbContext;
     
-    public GameService(SteamDBContext _dbContext)
+    public GroupService(SteamDBContext _dbContext)
     {
         this._dbContext = _dbContext;
     }

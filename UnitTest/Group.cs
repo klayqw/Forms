@@ -1,20 +1,20 @@
-using Microsoft.EntityFrameworkCore;
-using Moq;
+﻿using Moq;
 using Steam.Data;
-using Steam.Dto;
-using Steam.Models;
 using Steam.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace UnitTest;
 
-public class GameServiceTest
+public class Group
 {
-   
-
     [Fact]
     public void GetById_SendNegativeId_ThrowArgumentOutOfRangeException()
     {
-        var sqldbcontextmock = new Mock<SteamDBContext>();        
+        var sqldbcontextmock = new Mock<SteamDBContext>();
         var gameservice = new GroupService(null);
 
         Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
@@ -30,7 +30,7 @@ public class GameServiceTest
 
         Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
         {
-            await gameservice.DeleteFromLibary(-1,"test");
+            await gameservice.DeleteFromLibary(-1, "test");
         });
     }
 
@@ -45,5 +45,4 @@ public class GameServiceTest
             await gameservice.Update(-1, null);
         });
     }
-
 }
