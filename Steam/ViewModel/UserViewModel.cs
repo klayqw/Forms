@@ -1,5 +1,4 @@
-﻿using Steam.Migrations;
-using Steam.Models;
+﻿using Steam.Models;
 
 namespace Steam.ViewModel;
 

@@ -18,16 +18,18 @@ public class UserController : Controller
     private readonly SignInManager<User> signInManager;
     private readonly IUserServiceBase userService;
     private readonly IFriendService friendService;
+    private readonly IWorkShopServiceBase workShopService;
 
     public UserController(UserManager<User> userManager,
       RoleManager<IdentityRole> roleManager,
-      SignInManager<User> signInManager,IUserServiceBase userService, IFriendService friendService)
+      SignInManager<User> signInManager,IUserServiceBase userService, IFriendService friendService,IWorkShopServiceBase workShopService)
     {
         this.userManager = userManager;
         this.roleManager = roleManager;
         this.signInManager = signInManager;
         this.userService = userService;
         this.friendService = friendService;
+        this.workShopService = workShopService;
     }
 
     [HttpGet]
@@ -68,6 +70,7 @@ public class UserController : Controller
     [HttpPost]
     public async Task<IActionResult> Registration([FromForm] RegistrationDto dto)
     {
+        await Console.Out.WriteLineAsync(dto.Login);
         var newUser = new User
         {
             Email = dto.Email,
@@ -212,8 +215,9 @@ public class UserController : Controller
         var user = await userService.GetUser(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         var games = await userService.GetUserGames(user.Id);
         var friends = await friendService.GetUserFriend(user.Id);
-        Console.WriteLine(friends);
+        var workshop = await workShopService.ShowSub(user.Id);
         IEnumerable<FriendsGame> friendsgames = new List<FriendsGame>();
+        Console.WriteLine(workshop.First().Title);
         foreach (var friend in friends)
         {
             var gamesoffriend = await userService.GetUserGames(friend.Id);
@@ -227,6 +231,7 @@ public class UserController : Controller
         {
             games = games,
             friends = friendsgames,
+            works = workshop
         });
        
     }

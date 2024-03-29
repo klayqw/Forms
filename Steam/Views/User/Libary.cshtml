@@ -34,6 +34,23 @@
         margin-top: 10px;
         color: #fff;
     }
+
+    .work-info {
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-right: 10px;
+        margin-bottom: 10px;
+        width: calc(33.33% - 20px); /* чтобы элементы занимали 1/3 ширины */
+    }
+
+        .work-info p {
+            margin: 0;
+        }
+
+            .work-info p strong {
+                font-weight: bold;
+            }
 </style>
 <div class="container">
     <div class="row">
@@ -50,7 +67,7 @@
                         <li class="list-group-item bg-dark text-white" onclick="showGameDetails1(this)"
                             data-title="@item.Title"
                             data-description="@item.Description"
-                            data-price="@item.Price"                          
+                            data-price="@item.Price"
                             data-gameimageurl="@item.GameImageUrl"
                             data-background="@item.GamePreviewUrl">
                             <img src="@item.GameImageUrl" alt="Game Image" style="max-height: 100px;max-width: 100px;"> @item.Title
@@ -62,7 +79,6 @@
         <div class="col-md-8">
             <div id="gameDetails" style="display: none;">
                 <div id="gameDetailsContent">
-
                 </div>
             </div>
         </div>
@@ -83,11 +99,10 @@
 
         console.log(game.Title);
 
-        var friendsData = @Html.Raw(Json.Serialize(@Model.friends)); // Получаем список друзей из модели
+        var friendsData = @Html.Raw(Json.Serialize(@Model.friends));
         console.log(friendsData);
         console.log(game.Title);
 
-        // Фильтруем список друзей для поиска тех, кто играет в выбранную игру
         var friendsWithSameGame = friendsData.filter(function (friend) {
             return friend.games.some(function (game1) {
                 console.log('12121' + game1.title)
@@ -97,37 +112,68 @@
 
         console.log(friendsWithSameGame);
 
-        var friendsHtml = ''; // HTML для отображения друзей
+        var friendsHtml = '';
         friendsHtml += '<p class="text-white mb-3">Friends that also own this game!</p>';
         friendsHtml += '<div class="d-flex flex-wrap">';
         friendsWithSameGame.forEach(function (friend) {
             friendsHtml += `
-            <div class="friend-info mr-3 mb-3">
-                <img src="${friend.user.avatarUrl}" alt="${friend.user.userName}" class="img-thumbnail">
-                <p class="friend-name">${friend.user.userName}</p>
-            </div>`;
+                    <div class="friend-info mr-3 mb-3">
+                        <img src="${friend.user.avatarUrl}" alt="${friend.user.userName}" class="img-thumbnail">
+                        <p class="friend-name">${friend.user.userName}</p>
+                    </div>`;
         });
         friendsHtml += '</div>';
 
         console.log(friendsHtml);
 
-        // Генерация HTML для отображения деталей игры с информацией о друзьях
+        var worksData = @Html.Raw(Json.Serialize(@Model.works));
+        console.log(worksData);
+
+        var worksForGame = worksData.filter(function (work) {
+            return work.game.title === game.Title;
+        });
+
+        console.log(worksForGame);
+
+        var worksHtml = '';
+        worksHtml += '<p class="text-white mb-3">Works for this game:</p>';
+        worksHtml += '<div class="row">'; // Используем Bootstrap grid system для создания строк и столбцов
+
+        worksForGame.forEach(function (work) {
+            worksHtml += `
+                    <div class="col-md-4"> <!-- Используем колонки Bootstrap для распределения карточек по странице -->
+                        <div class="card bg-dark text-white mb-3">
+                            <div class="card-body">
+                                    <img src="${game.GameImageUrl}" alt="Game Image" style="max-height: 100px; max-width: 100px;">
+                                    <h5 class="card-title">Title: ${work.title}</h5>
+                                    <p class="card-text">Description: ${work.description}</p>
+                                <p class="card-text">Creator: ${work.creator}</p>
+                            </div>
+                        </div>
+                    </div>`;
+        });
+
+        worksHtml += '</div>'; // Закрываем строку Bootstrap
+
+        console.log(worksHtml);
+
         var gameInfoHtml = `
-                <div class="game-details" style="position: relative;">
-                    <div class="game-image" style="position: relative; background-image: url('${game.BackgroundImage}');">
-                        <img src="${game.GameImageUrl}" alt="Game Image" style="max-height: 150px; max-width: 150px; position: absolute; bottom: 0; left: 10px;">
-                    </div>
-                    <div class="game-info">
-                        <h3 class="text-white">${game.Title}</h3>
-                        <p class="text-white">${game.Description}</p>
-                        <p class="text-white">Price: $${game.Price}</p>
-                        ${friendsHtml} <!-- Вставляем HTML с информацией о друзьях -->
-                    </div>
-                </div>
-            `;
+                        <div class="game-details" style="position: relative;">
+                            <div class="game-image" style="position: relative; background-image: url('${game.BackgroundImage}');">
+                                <img src="${game.GameImageUrl}" alt="Game Image" style="max-height: 150px; max-width: 150px; position: absolute; bottom: 0; left: 10px;">
+                            </div>
+                            <div class="game-info">
+                                <h3 class="text-white">${game.Title}</h3>
+                                <p class="text-white">${game.Description}</p>
+                                <p class="text-white">Price: $${game.Price}</p>
+                                ${friendsHtml} <!-- Вставляем HTML с информацией о друзьях -->
+                                ${worksHtml} <!-- Вставляем HTML с информацией о работах -->
+                            </div>
+                        </div>
+                    `;
 
-        gameDetailsContent.innerHTML = gameInfoHtml; // Отображаем сформированный HTML
+        gameDetailsContent.innerHTML = gameInfoHtml;
 
-        document.getElementById("gameDetails").style.display = "block"; // Отображаем блок с деталями игры
+        document.getElementById("gameDetails").style.display = "block";
     }
 </script>

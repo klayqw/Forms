@@ -49,7 +49,7 @@
 </video>
 <div class="overlay"></div>
 
-@if(User.IsInRole("User") || User.IsInRole("Admin"))
+@if(User.Identity.IsAuthenticated == true)
 {
     <div class="text-center">
         <h5 class="text-white 50">Сongratulation!</h5>
